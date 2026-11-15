@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Token Radar — protocols with no token yet, ranked by implied value</title>
+<link rel="stylesheet" href="app.css">
+</head>
+<body>
+<header class="top">
+  <div class="brand">
+    <div class="logo">◉ TOKEN RADAR</div>
+    <div class="tagline">Protocols that record no token yet, ranked by what a token would be worth.</div>
+  </div>
+  <div class="meta">
+    <span>Snapshot <b id="asOf">—</b></span>
+    <span>Model <b>radar-2</b></span>
+  </div>
+</header>
+
+<section class="stats" id="stats"></section>
+
+<nav class="tabs">
+  <button data-tab="board" class="active">Board</button>
+  <button data-tab="live">Live tokens</button>
+  <button data-tab="how">How this radar works</button>
+</nav>
+
+<section id="tab-board" class="tabpage">
+  <div class="controls">
+    <input id="q" type="search" placeholder="Search name or slug…" autocomplete="off">
+    <select id="category"><option value="">All categories</option></select>
+    <select id="chain"><option value="">All chains</option></select>
+    <label class="watch"><input id="watchlist" type="checkbox"> Watchlist only</label>
+    <span class="count" id="rowCount"></span>
+  </div>
+  <div class="tablewrap">
+    <table id="board">
+      <thead><tr>
+        <th data-key="rank">#</th>
+        <th data-key="name">Protocol</th>
+        <th data-key="category">Category</th>
+        <th data-key="chains">Chains</th>
+        <th data-key="tvl_usd">TVL</th>
+        <th data-key="change_7d">7d</th>
+        <th data-key="age_days">Age</th>
+        <th data-key="implied_value_usd" class="num">Implied value</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  <p class="hint">Click a row for its farm plan and model breakdown. Click a column header to sort.</p>
+  <section id="detail" class="detail" hidden></section>
+</section>
+
+<section id="tab-live" class="tabpage" hidden>
+  <p class="note">These protocols already trade. Their numbers are <b>market values</b>, not implied values — they are shown apart so the board stays a list of launches still to come.</p>
+  <div class="tablewrap">
+    <table>
+      <thead><tr><th>#</th><th>Protocol</th><th>Category</th><th>Chains</th><th>TVL</th><th>Market cap</th><th>7d</th></tr></thead>
+      <tbody id="liveRows"></tbody>
+    </table>
+  </div>
+</section>
+
+<section id="tab-how" class="tabpage" hidden>
+  <h2>How this radar works</h2>
+  <p>Every protocol in the snapshot is read from DefiLlama's record. A protocol is on the board when its record carries <b>no token</b> — no market cap, no CoinGecko id, no ticker — and it is not a centralised exchange, a versioned fork (a name ending in V2, v2 or 2.0), or a wrapped, staked or bridged product of a token that already trades. The board ranks them by an <b>implied value</b>:</p>
+  <p class="formula">implied = TVL × base multiple × growth × maturity × breadth</p>
+  <ul>
+    <li><b>Base multiple</b> — what a dollar of TVL is worth as token value, by what the protocol does. Lending 0.35, derivatives and perpetuals 0.40, DEXs 0.30, yield 0.25, RWA and staking 0.20, bridges 0.15, everything else 0.25. Lending and derivatives monetise every dollar directly; a bridge moves value through without keeping it.</li>
+    <li><b>Growth</b> — 1 + clamped 7-day TVL change × 0.8. A +120% week lifts the multiple to 1.96; a −60% week cuts it to 0.52. Wild weeks are clamped so one spike cannot carry the board.</li>
+    <li><b>Maturity</b> — 0.5 + up to 0.5 for up to four years tracked. A protocol that has run for years with no token has survived audits, cycles and competitors.</li>
+    <li><b>Breadth</b> — 1 + 0.05 per extra chain, up to 1.20. TVL spread across chains is stickier than TVL on one chain.</li>
+  </ul>
+  <p>Implied value is capped at twice TVL and rounded to whole dollars. Ties break by slug, so the ranking is identical on every run.</p>
+  <h3>The category table</h3>
+  <table class="plain">
+    <thead><tr><th>Category</th><th>Base multiple</th></tr></thead>
+    <tbody>
+      <tr><td>Derivatives, Perpetuals, Options</td><td>0.40</td></tr>
+      <tr><td>Lending</td><td>0.35</td></tr>
+      <tr><td>Dexs</td><td>0.30</td></tr>
+      <tr><td>Yield, Yield Aggregator</td><td>0.25</td></tr>
+      <tr><td>RWA, Liquid Staking, Restaking, Staking Pool</td><td>0.20</td></tr>
+      <tr><td>Bridge, Canonical Bridge, Cross Chain Bridge</td><td>0.15</td></tr>
+      <tr><td>Everything else</td><td>0.25</td></tr>
+    </tbody>
+  </table>
+  <h3>What the snapshot is and is not</h3>
+  <p>The snapshot is DefiLlama's record, fetched once. <b>Records no token is not the same as has no token</b> — a protocol on this board may still have a token its record does not carry. The board says what a token would be worth if the protocol's record stayed as it is. It does not predict whether or when a token is issued.</p>
+  <p>The watchlist is a floor, never a ceiling: it holds the 40 protocols at or above $50M of TVL that meet the house rule. The board ranks every rankable pre-token protocol in the snapshot, including ones below that floor — the floor is where the reading started, not where it stops.</p>
+  <h3>Farm plans</h3>
+  <p>Each protocol carries eight steps: a fresh wallet, the category's own action with a capital tier from its TVL ($50–$250), one qualifying action a week, a hold of 30–60 days, checking the protocol's own points page, claiming only from links the protocol publishes, logging everything, and an exit plan. Every step states what it costs and how long it takes.</p>
+</section>
+
+<footer>
+  <p>Source: DefiLlama protocols, fetched 2026-11-14. Model radar-2. Not financial advice — implied values are this radar's own claim, and no farm step is a promise of a token or an airdrop.</p>
+</footer>
+<script src="../data.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
