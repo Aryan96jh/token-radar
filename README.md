@@ -1,8 +1,12 @@
+[![make.fun · token-radar-01](https://make.fun/badge/token-radar-01.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![rank](https://make.fun/badge/token-radar-01/Aryan96jh/token-radar/rank.svg)](https://make.fun/bounty/token-radar-01/leaderboard?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+[![reward](https://make.fun/badge/token-radar-01/Aryan96jh/token-radar/reward.svg)](https://make.fun/bounty/token-radar-01?utm_source=github&utm_medium=readme&utm_campaign=token-radar-01)
+
 # Token Radar
 
 A token launch radar: it ranks protocols that record no token yet by an
 implied value, and gives each one a concrete eight-step farm plan. Built for
-the make.fun `token-radar-01` competition.
+the [make.fun `token-radar-01` bounty](https://make.fun/bounty/token-radar-01).
 
 ## Run
 
